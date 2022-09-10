@@ -1,6 +1,7 @@
 import React from "react";
 import Data from "../../data/Data.json";
-import { Table, Thead, Tbody, Tfoot, Tr, Th, Td } from "@chakra-ui/react";
+// import { Table, Thead, Tbody, Tfoot, Tr, Th, Td } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td } from "../../table";
 import {
   flexRender,
   getCoreRowModel,
@@ -18,6 +19,7 @@ const BasicTable: React.FC = () => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
   return (
     <>
       <Table>
@@ -25,7 +27,7 @@ const BasicTable: React.FC = () => {
           {table.getHeaderGroups().map((headerGroup) => (
             <Tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <Th key={header.id} bg="gray.200">
+                <Th key={header.id}>
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()

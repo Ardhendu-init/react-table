@@ -1,20 +1,7 @@
 import React, { useState } from "react";
 import Data from "../../data/Data.json";
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  Box,
-  Button,
-  Text,
-  Input,
-  Flex,
-  Select,
-} from "@chakra-ui/react";
+import { Box, Button, Text, Input, Flex, Select } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td } from "../../table";
 import {
   flexRender,
   getCoreRowModel,
@@ -22,6 +9,7 @@ import {
   getSortedRowModel,
   SortingState,
   getPaginationRowModel,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 import { columns } from "./column";
 import { Person } from "./column";
@@ -29,28 +17,37 @@ import { Person } from "./column";
 const FeatureTable: React.FC = () => {
   const [data, setData] = useState<Person[]>(() => [...Data]);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
 
+  const [globalFilter, setGlobalFilter] = useState<string>("");
   const table = useReactTable({
     data,
     columns: columns,
 
     state: {
       sorting,
-      pagination,
+
+      globalFilter,
     },
 
     getCoreRowModel: getCoreRowModel(),
+
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onPaginationChange: setPagination,
+
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onGlobalFilterChange: setGlobalFilter,
   });
+
   return (
     <>
+      <Box>
+        Search:
+        <Input
+          value={globalFilter}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+        />
+      </Box>
       <Table>
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
